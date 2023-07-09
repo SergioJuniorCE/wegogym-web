@@ -1,13 +1,63 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script lang="ts">
+	import type { Exercise, Routines } from '$lib/types';
+	import { capitalize } from '$lib/utils';
+	import ExcerciseCard from './ExcerciseCard.svelte';
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout, the CSS import order is critical!</li>
-			<li><code class="code">/src/app.postcss</code> - minimal css to make the page full screen, may not be relevant for your project</li>
-			<li><code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents</li>
-		</ul>
+	let routines: Routines = {
+		chest: [
+			{
+				name: 'Barbell Bench Press',
+				sets: 4,
+				reps: 10,
+				help: 'tuwHzzPdaGc'
+			},
+			{
+				name: 'Dumbbell Flys',
+				sets: 4,
+				reps: 10,
+				help: '-lcbvOddoi8'
+			},
+			{
+				name: "Incline Dumbbell Press",
+				sets: 4,
+				reps: 10,
+				help: '8nNi8jbbUPE'
+			},
+			{
+				name: 'Chest Cable Press',
+				sets: 4,
+				reps: 10,
+				help: 'n4CEULDvATA'
+			},
+			{
+				name: 'Cable Crossovers',
+				sets: 4,
+				reps: 10,
+				help: 'DumkKcC_nHI'
+			},
+		]
+	};
+
+	let currentRoutine: Exercise[] = routines.chest;
+</script>
+
+<div class="container mx-auto flex justify-center items-center">
+	<div class="my-5">
+		<div class="btn-group variant-filled">
+			{#each Object.keys(routines) as routineName}
+				<button on:click={() => (currentRoutine = routines[routineName])}>
+					{capitalize(routineName)}
+				</button>
+			{/each}
+		</div>
 	</div>
+</div>
+<div class="flex items-center justify-center mb-3">
+	<ul>
+		{#each currentRoutine as exercise}
+			<li>
+				<ExcerciseCard {exercise} />
+			</li>
+		{/each}
+	</ul>
 </div>
