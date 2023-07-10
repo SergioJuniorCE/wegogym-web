@@ -55,7 +55,7 @@
 						title={exercise.name}
 						class="w-full"
 						height="315"
-						src={"https://www.youtube.com/embed/" + exercise.help}
+						src={"https://www.youtube.com/embed/" + exercise.video}
 						frameborder="0"
 						allowfullscreen
 					/>

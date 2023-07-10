@@ -1,8 +1,8 @@
 export type Exercise = {
   name: string;
   sets: number;
-  reps: number;
-  help: string;
+  reps: number | string;
+  video: string;
 };
 
 export type Routines = {

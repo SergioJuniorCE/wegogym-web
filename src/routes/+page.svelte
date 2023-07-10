@@ -1,40 +1,45 @@
 <script lang="ts">
+	import type { PageData } from './$types';
+
 	import type { Exercise, Routines } from '$lib/types';
 	import { capitalize } from '$lib/utils';
 	import ExcerciseCard from './ExcerciseCard.svelte';
+
+	export let data: PageData;
+	export const excercises = data.exercises;
 
 	let routines: Routines = {
 		chest: [
 			{
 				name: 'Barbell Bench Press',
 				sets: 4,
-				reps: 10,
-				help: 'tuwHzzPdaGc'
+				reps: '8-10',
+				video: 'tuwHzzPdaGc'
 			},
 			{
 				name: 'Dumbbell Flys',
 				sets: 4,
-				reps: 10,
-				help: '-lcbvOddoi8'
+				reps: '12-15',
+				video: '-lcbvOddoi8'
 			},
 			{
-				name: "Incline Dumbbell Press",
+				name: 'Incline Dumbbell Press',
 				sets: 4,
 				reps: 10,
-				help: '8nNi8jbbUPE'
+				video: '8nNi8jbbUPE'
 			},
 			{
 				name: 'Chest Cable Press',
 				sets: 4,
-				reps: 10,
-				help: 'n4CEULDvATA'
+				reps: '10-12',
+				video: 'n4CEULDvATA'
 			},
 			{
 				name: 'Cable Crossovers',
 				sets: 4,
 				reps: 10,
-				help: 'DumkKcC_nHI'
-			},
+				video: 'DumkKcC_nHI'
+			}
 		]
 	};
 
@@ -50,6 +55,9 @@
 				</button>
 			{/each}
 		</div>
+	</div>
+	<div>
+		<a href="/exercises/create">create ➕</a>
 	</div>
 </div>
 <div class="flex items-center justify-center mb-3">
