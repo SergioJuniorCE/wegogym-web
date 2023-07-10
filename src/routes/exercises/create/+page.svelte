@@ -5,44 +5,23 @@
 
 	type ExerciceInput = {};
 
-	let bulkInput = '';
-	let isBulkInputExpanded = false;
+	let msLink = '';
+	let isMsLinkInputExpanded = false;
 	let exercise: any = {};
 
-	function handleBulkInput() {
-		const lines = bulkInput.split('\n');
-		for (let i = 0; i < lines.length; i++) {
-			switch (lines[i]) {
-				case 'Target Muscle Group':
-					exercise.targetMuscleGroup = lines[i + 1];
-					break;
-				case 'Exercise Type':
-					exercise.exerciseType = lines[i + 1];
-					break;
-				case 'Equipment Required':
-					exercise.equipmentRequired = lines[i + 1];
-					break;
-				case 'Mechanics':
-					exercise.mechanics = lines[i + 1];
-					break;
-				case 'Force Type':
-					exercise.forceType = lines[i + 1];
-					break;
-				case 'Experience Level':
-					exercise.experienceLevel = lines[i + 1];
-					break;
-				case 'Secondary Muscles':
-					exercise.secondaryMuscles = lines[i + 1];
-					break;
-				default:
-					break;
-			}
-		}
-		console.log('exercise :>> ', exercise);
+	async function handleMsLink() {
+		const exerciseData = await fetch('/api/get-data-from-site', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ msLink })
+		});
+		exercise = await exerciseData.json();
 	}
 
-	function handleBulkInputToggle() {
-		isBulkInputExpanded = !isBulkInputExpanded;
+	function handleMsLinkInputToggle() {
+		isMsLinkInputExpanded = !isMsLinkInputExpanded;
 	}
 </script>
 
@@ -51,37 +30,40 @@
 </div>
 
 <div class="card m-3 p-2">
-	{#if isBulkInputExpanded}
+	{#if isMsLinkInputExpanded}
 		<label class="label mb-3">
-			<span on:click={handleBulkInputToggle} on:keydown={handleBulkInputToggle}
-				>Bulk Input <i class="fa-solid fa-chevron-up" /></span
+			<span on:click={handleMsLinkInputToggle} on:keydown={handleMsLinkInputToggle}
+				>MuscleStrength Link <i class="fa-solid fa-chevron-up" /></span
 			>
 			<div class="flex gap-2">
-				<textarea
-					class="textarea"
-					rows="4"
-					placeholder="Enter some long form content."
-					bind:value={bulkInput}
+				<input
+					class="input"
+					type="text"
+					placeholder="https://www.muscleandstrength.com/exercises/barbell-bench-press.html"
+					bind:value={msLink}
 				/>
-				<button type="button" class="btn variant-filled-secondary" on:click={handleBulkInput}
+				<button type="button" class="btn variant-filled-secondary" on:click={handleMsLink}
 					>Fill</button
 				>
 			</div></label
 		>
 	{:else}
-		<span on:click={handleBulkInputToggle} on:keydown={handleBulkInputToggle}
-			>Bulk Input <i class="fa-solid fa-chevron-down" /></span
+		<span on:click={handleMsLinkInputToggle} on:keydown={handleMsLinkInputToggle}
+			>MuscleStrength Link <i class="fa-solid fa-chevron-down" /></span
 		>
 		<!-- else content here -->
 	{/if}
 </div>
 
 <form method="POST" class="card m-3 p-2">
+	<div class="flex items-center justify-center">
+		<button type="submit" class="btn variant-filled-secondary">Create</button>
+	</div>
 	<label class="label mb-3">
 		<span>Name *</span>
 		<input
 			id="name"
-            name="name"
+			name="name"
 			class="input"
 			type="text"
 			placeholder="Barbell Bench Press"
@@ -93,7 +75,7 @@
 		<span>VideoID</span>
 		<input
 			id="videoId"
-            name="videoId"
+			name="videoId"
 			class="input"
 			type="text"
 			placeholder="tuwHzzPdaGc"
@@ -104,7 +86,7 @@
 		<span>Target Muscle Group *</span>
 		<input
 			id="targetMuscleGroup"
-            name="targetMuscleGroup"
+			name="targetMuscleGroup"
 			class="input"
 			type="text"
 			placeholder="Chest"
@@ -116,7 +98,7 @@
 		<span>Exercise Type *</span>
 		<input
 			id="exerciseType"
-            name="exerciseType"
+			name="exerciseType"
 			class="input"
 			type="text"
 			placeholder="Strength"
@@ -128,7 +110,7 @@
 		<span>Equipment Required *</span>
 		<input
 			id="equipmentRequired"
-            name="equipmentRequired"
+			name="equipmentRequired"
 			class="input"
 			type="text"
 			placeholder="Barbell"
@@ -140,7 +122,7 @@
 		<span>Mechanics *</span>
 		<input
 			id="mechanics"
-            name="mechanics"
+			name="mechanics"
 			class="input"
 			type="text"
 			placeholder="Compound"
@@ -152,7 +134,7 @@
 		<span>Force Type *</span>
 		<input
 			id="forceType"
-            name="forceType"
+			name="forceType"
 			class="input"
 			type="text"
 			placeholder="Push (Bilateral)"
@@ -164,7 +146,7 @@
 		<span>Experience Level *</span>
 		<input
 			id="experienceLevel"
-            name="experienceLevel"
+			name="experienceLevel"
 			class="input"
 			type="text"
 			placeholder="Intermediate"
@@ -176,6 +158,7 @@
 		<span>Secondary Muscles *</span>
 		<input
 			id="secondaryMuscles"
+			name="secondaryMuscles"
 			class="input"
 			type="text"
 			placeholder="Shoulders, Triceps"
@@ -183,7 +166,4 @@
 			bind:value={exercise.secondaryMuscles}
 		/>
 	</label>
-	<div class="flex items-center justify-center mb-3">
-		<button type="submit" class="btn variant-filled-secondary">Create</button>
-	</div>
 </form>

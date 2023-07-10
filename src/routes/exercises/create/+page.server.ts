@@ -8,7 +8,20 @@ export const load = (async () => {
 export const actions: Actions = {
     default: async ({ request }) => {
         const formData = await request.formData();
-        const { data } = await supabase
+        const exercise = {
+            name: formData.get('name') as string,
+            videoId: formData.get('videoId') as string,
+            targetMuscleGroup: formData.get('targetMuscleGroup') as string,
+            exerciseType: formData.get('exerciseType') as string,
+            equipmentRequired: formData.get('equipmentRequired') as string,
+            mechanics: formData.get('mechanics') as string,
+            forceType: formData.get('forceType') as string,
+            experienceLevel: formData.get('experienceLevel') as string,
+            secondaryMuscles: formData.get('secondaryMuscles') as string,
+        }
+
+        console.table(exercise);
+        const { data, error } = await supabase
             .from('exercises')
             .insert({
                 name: formData.get('name') as string,
@@ -21,6 +34,7 @@ export const actions: Actions = {
                 experienceLevel: formData.get('experienceLevel') as string,
                 secondaryMuscles: formData.get('secondaryMuscles') as string,
             });
+        if (error) console.log('error :>> ', error);
         console.log('data :>> ', data);
     }
 };
