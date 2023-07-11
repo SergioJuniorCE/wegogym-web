@@ -2,7 +2,7 @@
 	import type { Exercise } from '$lib/types';
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
-	export let exercise: Exercise;
+	export let exercise: any;
 
 	let showVideoHelp = false;
 
@@ -55,7 +55,7 @@
 						title={exercise.name}
 						class="w-full"
 						height="315"
-						src={"https://www.youtube.com/embed/" + exercise.video}
+						src={"https://www.youtube.com/embed/" + exercise.videoId}
 						frameborder="0"
 						allowfullscreen
 					/>
