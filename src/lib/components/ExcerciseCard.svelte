@@ -33,11 +33,11 @@
 			<div class="flex justify-between">
 				<div class="flex flex-col">
 					<span class="text-sm">Sets</span>
-					<span class="text-2xl">{exercise.sets}</span>
+					<span class="text-2xl">{exercise.sets ?? 4}</span>
 				</div>
 				<div class="flex flex-col">
 					<span class="text-sm">Reps</span>
-					<span class="text-2xl">{exercise.reps}</span>
+					<span class="text-2xl">{exercise.reps ?? "8-10"}</span>
 				</div>
 			</div>
 			<button class="w-12 m-0" use:popup={popupClick}>

@@ -5,6 +5,7 @@
 	import { capitalize } from '$lib/utils';
 	import ExcerciseCard from '$lib/components/ExcerciseCard.svelte';
 	import { onMount } from 'svelte';
+	import AnonUserLandingPage from '$lib/pages/AnonUserLandingPage.svelte';
 
 	export let data: PageData;
 	export const excercises = data.exercises;
@@ -43,30 +44,38 @@
 			}
 		]
 	};
+	
+	onMount(() => {
+		console.log(excercises);
+	});
 
 	let currentRoutine: Exercise[] = routines.chest;
 </script>
 
-<div class="container mx-auto flex justify-center items-center">
-	<div class="my-5">
-		<div class="btn-group variant-filled">
-			{#each Object.keys(routines) as routineName}
-				<button on:click={() => (currentRoutine = routines[routineName])}>
-					{capitalize(routineName)}
-				</button>
-			{/each}
+{#if data.session}
+	<div class="container mx-auto flex justify-center items-center">
+		<div class="my-5">
+			<div class="btn-group variant-filled">
+				{#each Object.keys(routines) as routineName}
+					<button on:click={() => (currentRoutine = routines[routineName])}>
+						{capitalize(routineName)}
+					</button>
+				{/each}
+			</div>
+		</div>
+		<div>
+			<a href="/exercises/create">create ➕</a>
 		</div>
 	</div>
-	<div>
-		<a href="/exercises/create">create ➕</a>
+	<div class="flex items-center justify-center mb-3">
+		<ul>
+			{#each excercises as exercise}
+				<li>
+					<ExcerciseCard {exercise} />
+				</li>
+			{/each}
+		</ul>
 	</div>
-</div>
-<div class="flex items-center justify-center mb-3">
-	<ul>
-		{#each currentRoutine as exercise}
-			<li>
-				<ExcerciseCard {exercise} />
-			</li>
-		{/each}
-	</ul>
-</div>
+{:else}
+	<AnonUserLandingPage />
+{/if}

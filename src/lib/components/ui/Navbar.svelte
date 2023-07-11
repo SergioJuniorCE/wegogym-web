@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { blur } from 'svelte/transition';
+	import Logo from './icons/Logo.svelte';
 	let isUserIconMenuOpen = false;
 	let isMobileMenuOpen = false;
 
@@ -61,16 +62,7 @@
 			</div>
 			<div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 				<div class="flex flex-shrink-0 items-center">
-					<img
-						class="block h-8 w-auto lg:hidden"
-						src="/img/wegogym-logo-white.png"
-						alt="Your Company"
-					/>
-					<img
-						class="hidden h-8 w-auto lg:block"
-						src="/img/wegogym-logo-white.png"
-						alt="Your Company"
-					/>
+					<Logo />
 				</div>
 				<div class="hidden sm:ml-6 sm:block">
 					<div class="flex space-x-4">
@@ -81,9 +73,9 @@
 							aria-current="page">Home</a
 						>
 						<a
-							href="/routines"
+							href="/workouts"
 							class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-							>Routines</a
+							>workouts</a
 						>
 					</div>
 				</div>

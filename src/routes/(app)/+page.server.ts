@@ -5,6 +5,7 @@ export const load = (async () => {
     const { data } = await supabase
         .from('exercises')
         .select('*')
+        .eq('targetMuscleGroup', 'Quads')
         .order('id', { ascending: true });
     return {
         exercises: data ?? []

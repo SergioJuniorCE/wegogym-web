@@ -4,7 +4,7 @@
 	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
-	import '../app.postcss';
+	import '/src/app.postcss';
 
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import Navbar from '$lib/components/ui/Navbar.svelte';
@@ -15,6 +15,7 @@
 
 	import type { LayoutData } from '../$types';
 	import { onMount } from 'svelte';
+	import AnonNavbar from '$lib/components/ui/AnonNavbar.svelte';
 
 	export let data: LayoutData;
 
@@ -36,7 +37,11 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<Navbar />
+		{#if session}
+			<Navbar />
+		{:else}
+			<AnonNavbar />
+		{/if}
 	</svelte:fragment>
 	<!-- (sidebarLeft) -->
 	<!-- (sidebarRight) -->

@@ -2,7 +2,7 @@ import "$lib/supabaseClient";
 // src/hooks.server.ts
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
-import { redirect, type Handle } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createSupabaseServerClient({
@@ -23,12 +23,12 @@ export const handle: Handle = async ({ event, resolve }) => {
     return session;
   };
 
-  if (!event.url.pathname.startsWith('/auth')) {
-    const session = await event.locals.getSession();
-    if (!session) {
-      throw redirect(303, '/auth/login')
-    }
-  }
+  // if (!event.url.pathname.startsWith('/auth')) {
+  //   const session = await event.locals.getSession();
+  //   if (!session) {
+  //     throw redirect(303, '/auth/login')
+  //   }
+  // }
 
   return resolve(event, {
     /**
