@@ -1,7 +1,14 @@
+import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { parse } from 'parse5';
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals: { supabase, getSession } }) => {
+    const session = await getSession();
+    if (!session) {
+        // the user is not signed in
+        throw error(401, { message: 'Unauthorized' });
+    }
+
     const { msLink } = await request.json();
     const res = await fetch(msLink);
     const html = await res.text();
@@ -82,23 +89,6 @@ function findNode(node: any, tagName: string): any {
     if (node.childNodes) {
         for (const childNode of node.childNodes) {
             const foundNode = findNode(childNode, tagName);
-            if (foundNode) {
-                return foundNode;
-            }
-        }
-    }
-
-    return null;
-}
-
-function findNodeByText(node: any, text: string): any {
-    if (node.childNodes && node.childNodes[0]?.value === text) {
-        return node;
-    }
-
-    if (node.childNodes) {
-        for (const childNode of node.childNodes) {
-            const foundNode = findNodeByText(childNode, text);
             if (foundNode) {
                 return foundNode;
             }

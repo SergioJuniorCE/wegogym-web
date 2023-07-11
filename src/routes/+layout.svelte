@@ -7,12 +7,31 @@
 	import '../app.postcss';
 
 	import { AppShell } from '@skeletonlabs/skeleton';
-	import Navbar from '$lib/ui/Navbar.svelte';
+	import Navbar from '$lib/components/ui/Navbar.svelte';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { invalidate } from '$app/navigation';
+
+	import type { LayoutData } from './$types';
+	import { onMount } from 'svelte';
+
+	export let data: LayoutData;
+
+	$: ({ supabase, session } = data);
 
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+	onMount(() => {
+		const {
+			data: { subscription }
+		} = supabase.auth.onAuthStateChange((event, _session) => {
+			if (_session?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		return () => subscription.unsubscribe();
+	});
 </script>
 
 <AppShell>

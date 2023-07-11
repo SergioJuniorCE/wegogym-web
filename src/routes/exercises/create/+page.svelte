@@ -3,8 +3,6 @@
 
 	export let data: PageData;
 
-	type ExerciceInput = {};
-
 	let msLink = '';
 	let isMsLinkInputExpanded = false;
 	let exercise: any = {};
