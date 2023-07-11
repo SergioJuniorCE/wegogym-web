@@ -3,7 +3,7 @@
 
 	import type { Exercise, Routines } from '$lib/types';
 	import { capitalize } from '$lib/utils';
-	import ExcerciseCard from '../lib/components/ExcerciseCard.svelte';
+	import ExcerciseCard from '$lib/components/ExcerciseCard.svelte';
 	import { onMount } from 'svelte';
 
 	export let data: PageData;

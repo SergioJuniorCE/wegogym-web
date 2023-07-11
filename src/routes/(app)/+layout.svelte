@@ -13,7 +13,7 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { invalidate } from '$app/navigation';
 
-	import type { LayoutData } from './$types';
+	import type { LayoutData } from '../$types';
 	import { onMount } from 'svelte';
 
 	export let data: LayoutData;
