@@ -10,7 +10,7 @@
 	export let data: PageData;
 	export const excercises = data.exercises;
 
-	let routines: Routines = {
+	let routines: any = {
 		chest: [
 			{
 				name: 'Barbell Bench Press',
