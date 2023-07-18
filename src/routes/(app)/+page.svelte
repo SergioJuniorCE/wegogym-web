@@ -44,7 +44,7 @@
 			}
 		]
 	};
-	
+
 	onMount(() => {
 		console.log(excercises);
 	});
@@ -53,7 +53,7 @@
 </script>
 
 {#if data.session}
-	<div class="container mx-auto flex justify-center items-center">
+	<div class="container mx-auto flex justify-center">
 		<div class="my-5">
 			<div class="btn-group variant-filled">
 				{#each Object.keys(routines) as routineName}
@@ -61,10 +61,8 @@
 						{capitalize(routineName)}
 					</button>
 				{/each}
+				<a href="/exercises/create"><i class="fa-solid fa-plus" /></a>
 			</div>
-		</div>
-		<div>
-			<a href="/exercises/create">create ➕</a>
 		</div>
 	</div>
 	<div class="flex items-center justify-center mb-3">
