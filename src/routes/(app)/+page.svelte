@@ -6,59 +6,49 @@
 	import ExcerciseCard from '$lib/components/ExcerciseCard.svelte';
 	import { onMount } from 'svelte';
 	import AnonUserLandingPage from '$lib/pages/AnonUserLandingPage.svelte';
+	import { supabase } from '$lib/supabaseClient';
 
 	export let data: PageData;
-	export const excercises = data.exercises;
-
-	let routines: any = {
-		chest: [
-			{
-				name: 'Barbell Bench Press',
-				sets: 4,
-				reps: '8-10',
-				video: 'tuwHzzPdaGc'
-			},
-			{
-				name: 'Dumbbell Flys',
-				sets: 4,
-				reps: '12-15',
-				video: '-lcbvOddoi8'
-			},
-			{
-				name: 'Incline Dumbbell Press',
-				sets: 4,
-				reps: 10,
-				video: '8nNi8jbbUPE'
-			},
-			{
-				name: 'Chest Cable Press',
-				sets: 4,
-				reps: '10-12',
-				video: 'n4CEULDvATA'
-			},
-			{
-				name: 'Cable Crossovers',
-				sets: 4,
-				reps: 10,
-				video: 'DumkKcC_nHI'
-			}
-		]
-	};
+	let { exercises, categories, targetMuscleGroup } = data;
 
 	onMount(() => {
-		console.log(excercises);
+		console.log(exercises);
+		console.log('targetMuscleGroup :>> ', targetMuscleGroup);
 	});
 
-	let currentRoutine: Exercise[] = routines.chest;
+	let currentCategory: string = targetMuscleGroup;
+
+	async function handleChangeMuscle(category: string) {
+		const { data, error } = await supabase
+			.from('exercises')
+			.select('*')
+			.eq('targetMuscleGroup', category);
+
+		if (error) {
+			alert(error.message);
+			return;
+		}
+
+		if (!data) {
+			alert('No exercises found');
+			return;
+		}
+
+		exercises = data;
+	}
 </script>
 
 {#if data.session}
 	<div class="container mx-auto flex justify-center">
 		<div class="my-5">
 			<div class="btn-group variant-filled">
-				{#each Object.keys(routines) as routineName}
-					<button on:click={() => (currentRoutine = routines[routineName])}>
-						{capitalize(routineName)}
+				{#each categories as category}
+					<button
+						on:click={() => {
+							handleChangeMuscle(category);
+						}}
+					>
+						{capitalize(category)}
 					</button>
 				{/each}
 				<a href="/exercises/create"><i class="fa-solid fa-plus" /></a>
@@ -67,7 +57,7 @@
 	</div>
 	<div class="flex items-center justify-center mb-3">
 		<ul>
-			{#each excercises as exercise}
+			{#each exercises as exercise}
 				<li>
 					<ExcerciseCard {exercise} />
 				</li>

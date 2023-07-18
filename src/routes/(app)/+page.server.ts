@@ -12,6 +12,12 @@ export const load = (async () => {
         targetMuscleGroup = "Quads"
     }
 
+    const categories = [
+        "Chest",
+        "Quads",
+        "Back"
+    ]
+
 
     const { data } = await supabase
         .from('exercises')
@@ -19,6 +25,8 @@ export const load = (async () => {
         .eq('targetMuscleGroup', targetMuscleGroup)
         .order('id', { ascending: true });
     return {
-        exercises: data ?? []
+        exercises: data ?? [],
+        categories,
+        targetMuscleGroup
     };
 }) satisfies PageServerLoad;
