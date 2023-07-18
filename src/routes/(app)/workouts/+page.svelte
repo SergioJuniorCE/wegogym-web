@@ -21,4 +21,6 @@
 			</div>
 		{/each}
 	{/if}
+
+	<a href="/workouts/create">create</a>
 </section>
