@@ -45,13 +45,17 @@
 				{#each categories as category}
 					<button
 						on:click={() => {
-							handleChangeMuscle(category);
+							if (category !== currentCategory) {
+								handleChangeMuscle(category);
+							}
 						}}
 					>
 						{capitalize(category)}
 					</button>
 				{/each}
-				<a href="/exercises/create"><i class="fa-solid fa-plus" /></a>
+				<a href="/exercises/create" data-sveltekit-preload-data="hover"
+					><i class="fa-solid fa-plus" /></a
+				>
 			</div>
 		</div>
 	</div>
