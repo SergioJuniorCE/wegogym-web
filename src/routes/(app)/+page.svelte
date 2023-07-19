@@ -22,7 +22,7 @@
 		const { data, error } = await supabase
 			.from('exercises')
 			.select('*')
-			.eq('targetMuscleGroup', category);
+			.in('targetMuscleGroup', category === 'Back' ? ['Back', 'Lats'] : [category]);
 
 		if (error) {
 			alert(error.message);
@@ -38,27 +38,13 @@
 	}
 </script>
 
-<button
-	type="button"
-	class="btn variant-outline-primary"
-	on:click={async () => {
-		const perm = await Notification.requestPermission();
-		if (perm === 'granted') {
-			// Wait 45 seconds
-			setTimeout(() => {
-				new Notification('Hello world!');
-			}, 3000);
-		}
-	}}
->
-	Rest
-</button>
 {#if data.session}
 	<div class="container mx-auto flex justify-center">
 		<div class="my-5">
 			<div class="btn-group variant-filled">
 				{#each categories as category}
 					<button
+						class={category === currentCategory ? 'variant-filled-secondary text-white' : ''}
 						on:click={() => {
 							if (category !== currentCategory) {
 								handleChangeMuscle(category);

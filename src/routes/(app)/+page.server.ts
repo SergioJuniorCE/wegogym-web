@@ -1,3 +1,5 @@
+import type { Database } from '$lib/database.types';
+import type { Exercise } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
@@ -9,6 +11,8 @@ export const load = (async ({ locals }) => {
         targetMuscleGroup = 'Chest';
     } else if (day === 2) {
         targetMuscleGroup = "Quads"
+    } else if (day === 3) {
+        targetMuscleGroup = "Back"
     }
 
     const categories = [
@@ -17,15 +21,35 @@ export const load = (async ({ locals }) => {
         "Back"
     ]
 
+    let data: Exercise[];
 
-    const { data } = await locals.supabase
-        .from('exercises')
-        .select('*')
-        .eq('targetMuscleGroup', targetMuscleGroup)
-        .order('id', { ascending: true });
+    if (targetMuscleGroup === "Back") {
+        data = await getBackExercises({ locals, targetMuscleGroup });
+    } else {
+        data = await getExercises({ locals, targetMuscleGroup });
+    }
+
+
     return {
         exercises: data ?? [],
         categories,
         targetMuscleGroup
     };
 }) satisfies PageServerLoad;
+
+async function getExercises({ locals, targetMuscleGroup }: { locals: App.Locals, targetMuscleGroup: string }): Promise<Exercise[]> {
+    const { data } = await locals.supabase
+        .from('exercises')
+        .select('*')
+        .eq('targetMuscleGroup', targetMuscleGroup)
+        .order('id', { ascending: true });
+    return data as Exercise[];
+}
+
+async function getBackExercises({ locals, targetMuscleGroup }: { locals: App.Locals, targetMuscleGroup: string }): Promise<Exercise[]> {
+    const { data } = await locals.supabase
+        .from('exercises')
+        .select('*')
+        .in('targetMuscleGroup', ['Back', 'Lats'])
+    return data as Exercise[];
+}

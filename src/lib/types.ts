@@ -1,9 +1,6 @@
-export type Exercise = {
-  name: string;
-  sets: number;
-  reps: number | string;
-  video: string;
-};
+import type { Database } from "./database.types";
+
+export type Exercise = Database["public"]["Tables"]["exercises"]["Row"];
 
 export type Routines = {
   [key: string]: Exercise[];

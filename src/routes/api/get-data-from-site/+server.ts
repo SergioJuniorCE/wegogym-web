@@ -3,82 +3,88 @@ import type { RequestHandler } from './$types';
 import { parse } from 'parse5';
 
 export const POST: RequestHandler = async ({ request, locals: { supabase, getSession } }) => {
-    const session = await getSession();
-    if (!session) {
-        // the user is not signed in
-        throw error(401, { message: 'Unauthorized' });
-    }
+    try {
+        const session = await getSession();
+        if (!session) {
+            // the user is not signed in
+            throw error(401, { message: 'Unauthorized' });
+        }
 
-    const { msLink } = await request.json();
-    const res = await fetch(msLink);
-    const html = await res.text();
+        const { msLink } = await request.json();
+        const res = await fetch(msLink);
+        const html = await res.text();
 
-    const doc = parse(html);
+        const doc = parse(html);
 
-    const nameElement = findNode(doc, 'h1');
-    const videoElement = findNode(doc, 'iframe');
-    const exerciseProfile = findNodeByClass(doc, 'node-stats-block')
-
-
-
-    if (!nameElement || !videoElement || !exerciseProfile) {
-        // Handle the case where expected elements are not found
-        return new Response(JSON.stringify({ error: 'Required elements not found in HTML' }), { status: 500 });
-    }
-
-    // ul tag
-    const profile = exerciseProfile.childNodes[3];
-
-    // li tags
-    const profileItems = profile.childNodes.filter((node: any) => node.tagName === 'li');
+        const nameElement = findNode(doc, 'h1');
+        const videoElement = findNode(doc, 'iframe');
+        const exerciseProfile = findNodeByClass(doc, 'node-stats-block')
 
 
-    const asd: string[] = [];
 
-    profileItems.forEach((item: any) => {
-        item.childNodes.forEach((node: any) => {
-            if (node.tagName === 'div' || node.tagName === '#text') {
-                if (node.childNodes[0].value) {
-                    asd.push(node.childNodes[0].value);
+        if (!nameElement || !videoElement || !exerciseProfile) {
+            // Handle the case where expected elements are not found
+            return new Response(JSON.stringify({ error: 'Required elements not found in HTML' }), { status: 500 });
+        }
+
+        // ul tag
+        const profile = exerciseProfile.childNodes[3];
+
+        // li tags
+        const profileItems = profile.childNodes.filter((node: any) => node.tagName === 'li');
+
+
+        const asd: string[] = [];
+
+        profileItems.forEach((item: any) => {
+            item.childNodes.forEach((node: any) => {
+                if (node.tagName === 'div' || node.tagName === '#text') {
+                    if (node.childNodes[0].value) {
+                        asd.push(node.childNodes[0].value);
+                    }
+                    if (node.childNodes[0].childNodes) {
+                        asd.push(node.childNodes[0].childNodes[0].childNodes[0].childNodes[0].value);
+                    }
                 }
-                if (node.childNodes[0].childNodes) {
-                    asd.push(node.childNodes[0].childNodes[0].childNodes[0].childNodes[0].value);
+                else if (node.tagName === undefined) {
+                    if (node.value && node.value !== '\n') {
+                        let value: string = node.value;
+                        asd.push(value.replaceAll(/\n/g, ''));
+                    }
                 }
-            }
-            else if (node.tagName === undefined) {
-                if (node.value && node.value !== '\n') {
-                    let value: string = node.value;
-                    asd.push(value.replaceAll(/\n/g, ''));
-                }
-            }
+            });
         });
-    });
 
-    asd[asd.length - 1] = asd[asd.length - 1].slice(1, -1).trim();
+        asd[asd.length - 1] = asd[asd.length - 1].slice(1, -1).trim();
 
-    const [
-        targetMuscleGroup,
-        exerciseType,
-        equipmentRequired,
-        mechanics,
-        forceType,
-        experienceLevel,
-        secondaryMuscles,
-    ] = asd;
+        const [
+            targetMuscleGroup,
+            exerciseType,
+            equipmentRequired,
+            mechanics,
+            forceType,
+            experienceLevel,
+            secondaryMuscles,
+        ] = asd;
 
-    const exercise = {
-        name: nameElement.childNodes[0].value.split(' Video')[0],
-        videoId: videoElement.attrs.find((attr: any) => attr.name === 'src')?.value.split('/').pop().split('?')[0],
-        targetMuscleGroup,
-        exerciseType,
-        equipmentRequired,
-        mechanics,
-        forceType,
-        experienceLevel,
-        secondaryMuscles,
-    };
+        const exercise = {
+            name: nameElement.childNodes[0].value.split(' Video')[0],
+            videoId: videoElement.attrs.find((attr: any) => attr.name === 'src')?.value.split('/').pop().split('?')[0],
+            targetMuscleGroup,
+            exerciseType,
+            equipmentRequired,
+            mechanics,
+            forceType,
+            experienceLevel,
+            secondaryMuscles,
+        };
 
-    return new Response(JSON.stringify(exercise), { headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify(exercise), { headers: { 'Content-Type': 'application/json' } });
+    } catch (err) {
+        let err1 = err as any;
+        console.log('err :>> ', err);
+        return new Response(JSON.stringify({ error: err1.message }), { status: 500 });
+    }
 };
 
 function findNode(node: any, tagName: string): any {
