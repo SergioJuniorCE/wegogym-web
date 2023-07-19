@@ -1,7 +1,6 @@
 import type { PageServerLoad } from './$types';
-import { supabase } from "$lib/supabaseClient";
 
-export const load = (async () => {
+export const load = (async ({ locals }) => {
 
     // Get current day
     const day = new Date().getDay();
@@ -19,7 +18,7 @@ export const load = (async () => {
     ]
 
 
-    const { data } = await supabase
+    const { data } = await locals.supabase
         .from('exercises')
         .select('*')
         .eq('targetMuscleGroup', targetMuscleGroup)
