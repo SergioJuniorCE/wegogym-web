@@ -75,7 +75,7 @@
 			// Wait 45 seconds
 			setTimeout(() => {
 				new Notification('Hello world!');
-			}, 45000);
+			}, 3000);
 		}
 	}}
 >
