@@ -67,21 +67,6 @@
 	}
 </script>
 
-<button
-	type="button"
-	on:click={async () => {
-		const perm = await Notification.requestPermission();
-		if (perm === 'granted') {
-			// Wait 45 seconds
-			setTimeout(() => {
-				new Notification('Hello world!');
-			}, 3000);
-		}
-	}}
->
-	Rest
-</button>
-
 <div class="mt-3 flex mx-auto container justify-center">
 	<h1 class="text-lg">Create a Workout</h1>
 </div>

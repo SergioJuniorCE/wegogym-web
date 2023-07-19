@@ -38,6 +38,21 @@
 	}
 </script>
 
+<button
+	type="button"
+	class="btn variant-outline-primary"
+	on:click={async () => {
+		const perm = await Notification.requestPermission();
+		if (perm === 'granted') {
+			// Wait 45 seconds
+			setTimeout(() => {
+				new Notification('Hello world!');
+			}, 3000);
+		}
+	}}
+>
+	Rest
+</button>
 {#if data.session}
 	<div class="container mx-auto flex justify-center">
 		<div class="my-5">
