@@ -25,29 +25,32 @@ export const load = (async ({ locals }) => {
 export const actions: Actions = {
     default: async ({ request, locals }) => {
         const formData = await request.formData();
-        const workout = {
-            name: formData.get('name') as string,
-            videoId: formData.get('videoId') as string,
-            targetMuscleGroup: formData.get('targetMuscleGroup') as string,
-            exerciseType: formData.get('exerciseType') as string,
-            equipmentRequired: formData.get('equipmentRequired') as string,
-            mechanics: formData.get('mechanics') as string,
-            forceType: formData.get('forceType') as string,
-            experienceLevel: formData.get('experienceLevel') as string,
-            secondaryMuscles: formData.get('secondaryMuscles') as string,
-        }
-        const { data, error } = await locals.supabase
-            .from('exercises')
-            .insert(exercise);
+        formData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
+        // const workout = {
+        //     name: formData.get('name') as string,
+        //     videoId: formData.get('videoId') as string,
+        //     targetMuscleGroup: formData.get('targetMuscleGroup') as string,
+        //     exerciseType: formData.get('exerciseType') as string,
+        //     equipmentRequired: formData.get('equipmentRequired') as string,
+        //     mechanics: formData.get('mechanics') as string,
+        //     forceType: formData.get('forceType') as string,
+        //     experienceLevel: formData.get('experienceLevel') as string,
+        //     secondaryMuscles: formData.get('secondaryMuscles') as string,
+        // }
+        // const { data, error } = await locals.supabase
+        //     .from('exercises')
+        //     .insert(exercise);
 
-        if (error) console.log('error :>> ', error);
+        // if (error) console.log('error :>> ', error);
 
-        return {
-            status: 302,
-            headers: {
-                location: '/exercises',
-            },
-        };
+        // return {
+        //     status: 302,
+        //     headers: {
+        //         location: '/exercises',
+        //     },
+        // };
 
     }
 };

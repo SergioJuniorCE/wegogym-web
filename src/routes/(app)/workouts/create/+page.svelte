@@ -55,19 +55,32 @@
 			meta: { exercise: obj }
 		};
 	}
+
+	async function createWorkout(): Promise<void> {
+		await fetch('/api/workouts/create', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(workoutExercises)
+		});
+	}
 </script>
 
-<!-- <button
+<button
 	type="button"
 	on:click={async () => {
 		const perm = await Notification.requestPermission();
 		if (perm === 'granted') {
-			new Notification('Hello world!');
+			// Wait 45 seconds
+			setTimeout(() => {
+				new Notification('Hello world!');
+			}, 45000);
 		}
 	}}
 >
-	asd
-</button> -->
+	Rest
+</button>
 
 <div class="mt-3 flex mx-auto container justify-center">
 	<h1 class="text-lg">Create a Workout</h1>
