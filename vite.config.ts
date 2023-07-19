@@ -5,7 +5,7 @@ import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 export default defineConfig({
 	plugins: [sveltekit(),
 	SvelteKitPWA({
-		strategies: 'injectManifest',
+		strategies: 'generateSW',
 		srcDir: 'src',
 		filename: 'service-worker.ts',
 	})
