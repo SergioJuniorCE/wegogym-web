@@ -16,12 +16,16 @@
 	import type { LayoutData } from '../$types';
 	import { onMount } from 'svelte';
 	import AnonNavbar from '$lib/components/ui/AnonNavbar.svelte';
+	import BottomNavigation from '$lib/components/ui/BottomNavigation.svelte';
 
 	export let data: LayoutData;
 
 	$: ({ supabase, session } = data);
 
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
+	let isMobile = false;
+
 	onMount(() => {
 		const {
 			data: { subscription }
@@ -31,13 +35,17 @@
 			}
 		});
 
+		isMobile = window.innerWidth < 768; // Adjust the threshold according to your needs
+
 		return () => subscription.unsubscribe();
 	});
 </script>
 
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if session}
+		{#if isMobile}
+			<BottomNavigation />
+		{:else if session}
 			<Navbar />
 		{:else}
 			<AnonNavbar />

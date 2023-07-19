@@ -4,12 +4,11 @@ import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 export default defineConfig({
 	plugins: [sveltekit(),
-	// SvelteKitPWA({
-	// 	strategies: 'injectManifest',
-	// 	srcDir: 'src',
-	// 	filename: 'service-worker.ts', // or `my-sw.ts`
-	// 	/* other pwa options */
-	// })
+	SvelteKitPWA({
+		strategies: 'injectManifest',
+		srcDir: 'src',
+		filename: 'service-worker.ts',
+	})
 	],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']

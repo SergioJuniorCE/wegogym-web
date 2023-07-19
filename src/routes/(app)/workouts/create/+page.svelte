@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Database } from '$lib/database.types';
 	import type { PageData } from './$types';
 	import { Autocomplete, popup } from '@skeletonlabs/skeleton';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
@@ -16,32 +17,57 @@
 
 	let isInputInFocus: boolean = false;
 
-	const exerciseOptions: AutocompleteOption[] = exercises.map((exercise) => {
-		return {
-			label: exercise.name as string,
-			value: exercise.id,
-			keywords: exercise.name,
-			meta: { exercise }
-		};
-	});
+	let exerciseOptions: AutocompleteOption[];
 
 	let workoutName = '';
 
+	let workoutExercises: Database['public']['Tables']['exercises']['Row'][] = [];
+
+	$: denyList = workoutExercises.map((we) => we.name);
+
+	onMount(() => {
+		exerciseOptions = exercises.map((exercise) => {
+			return {
+				label: `${exercise.name as string} | ${exercise.targetMuscleGroup as string}`,
+				value: exercise.id,
+				keywords: exercise.name,
+				meta: { exercise: exercise }
+			};
+		});
+		exerciseOptions.push({
+			label: '0123456789012345678901234567890123456789',
+			value: 'asd',
+			keywords: 'asd',
+			meta: { exercise: { name: 'asd', targetMuscleGroup: 'asd' } }
+		});
+	});
+
 	function onExerciseSelection(event: any): void {
-		inputExercise = event.detail.label;
+		workoutExercises = [...workoutExercises, event.detail.meta.exercise];
+		inputExercise = '';
+	}
+
+	function formatAutoCompleteOption(obj: any): AutocompleteOption {
+		return {
+			label: obj.name,
+			value: obj.id,
+			keywords: obj.name,
+			meta: { exercise: obj }
+		};
 	}
 </script>
 
-<button type="button"
-    on:click={async () => {
-        const perm  = await Notification.requestPermission();
-        if (perm === "granted") {
-            new Notification("Hello world!");
-        }
-    }}
+<!-- <button
+	type="button"
+	on:click={async () => {
+		const perm = await Notification.requestPermission();
+		if (perm === 'granted') {
+			new Notification('Hello world!');
+		}
+	}}
 >
-    asd
-</button>
+	asd
+</button> -->
 
 <section class="container mx-auto flex justify-center w-96">
 	<input
@@ -67,11 +93,17 @@
 			bind:input={inputExercise}
 			options={exerciseOptions}
 			on:selection={onExerciseSelection}
+			denylist={denyList}
 		/>
 	</div>
 </section>
 <section class="flex justify-center {isInputInFocus ? 'mt-52' : 'mt-3'}">
-	<div class="grid grid-cols-2 gap-4">
+	<ul>
+		{#each workoutExercises as we}
+			<pre>{we.name} | {we.targetMuscleGroup}</pre>
+		{/each}
+	</ul>
+	<!-- <div class="grid grid-cols-2 gap-4">
 		<div class="col-span-2">
 			<form class="card">
 				<div class="flex justify-between">
@@ -130,5 +162,5 @@
 				</div>
 			</form>
 		</div>
-	</div>
+	</div> -->
 </section>
