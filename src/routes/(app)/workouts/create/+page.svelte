@@ -69,7 +69,11 @@
 	asd
 </button> -->
 
-<section class="container mx-auto flex justify-center w-96">
+<div class="mt-3 flex mx-auto container justify-center">
+	<h1 class="text-lg">Create a Workout</h1>
+</div>
+
+<section class="container mx-auto flex justify-center w-96 mt-3">
 	<input
 		class="input autocomplete"
 		type="search"
@@ -97,12 +101,18 @@
 		/>
 	</div>
 </section>
-<section class="flex justify-center {isInputInFocus ? 'mt-52' : 'mt-3'}">
+<section class="flex justify-center {isInputInFocus ? 'mt-52' : 'mt-3'} grid">
 	<ul>
 		{#each workoutExercises as we}
-			<pre>{we.name} | {we.targetMuscleGroup}</pre>
+			<div class="card p-2">
+				<div>
+					<span>✅</span><span>{we.name} | {we.targetMuscleGroup}</span>
+				</div>
+			</div>
 		{/each}
 	</ul>
+	<button type="button" class="btn variant-filled-primary">Create</button>
+
 	<!-- <div class="grid grid-cols-2 gap-4">
 		<div class="col-span-2">
 			<form class="card">
