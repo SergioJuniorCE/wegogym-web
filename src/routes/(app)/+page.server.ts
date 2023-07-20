@@ -1,33 +1,41 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { PageServerLoad } from './$types';
 import type { Database } from '$lib/database.types';
 import type { Exercise } from '$lib/types';
-import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 
     // Get current day
     const day = new Date().getDay();
     let targetMuscleGroup = '';
-    if (day === 1) {
-        targetMuscleGroup = 'Chest';
-    } else if (day === 2) {
-        targetMuscleGroup = "Quads"
-    } else if (day === 3) {
-        targetMuscleGroup = "Back"
+    switch (day) {
+        case 1:
+            targetMuscleGroup = 'Chest';
+            break;
+        case 2:
+            targetMuscleGroup = 'Quads';
+            break;
+        case 3:
+            targetMuscleGroup = 'Back';
+            break;
+        default:
+            targetMuscleGroup = 'Chest';
+            break;
     }
-
     const categories = [
         "Chest",
         "Quads",
         "Back"
     ]
 
-    let data: Exercise[];
+    let data;
 
-    if (targetMuscleGroup === "Back") {
-        data = await getBackExercises({ locals, targetMuscleGroup });
+    if (targetMuscleGroup === 'Back') {
+        data = await fetchBack({ supabase: locals.supabase });
     } else {
-        data = await getExercises({ locals, targetMuscleGroup });
+        data = await fetchExercises({ supabase: locals.supabase, targetMuscleGroup });
     }
+
 
 
     return {
@@ -37,8 +45,8 @@ export const load = (async ({ locals }) => {
     };
 }) satisfies PageServerLoad;
 
-async function getExercises({ locals, targetMuscleGroup }: { locals: App.Locals, targetMuscleGroup: string }): Promise<Exercise[]> {
-    const { data } = await locals.supabase
+async function fetchExercises({ supabase, targetMuscleGroup }: { supabase: SupabaseClient<Database>, targetMuscleGroup: string }) {
+    const { data } = await supabase
         .from('exercises')
         .select('*')
         .eq('targetMuscleGroup', targetMuscleGroup)
@@ -46,10 +54,11 @@ async function getExercises({ locals, targetMuscleGroup }: { locals: App.Locals,
     return data as Exercise[];
 }
 
-async function getBackExercises({ locals, targetMuscleGroup }: { locals: App.Locals, targetMuscleGroup: string }): Promise<Exercise[]> {
-    const { data } = await locals.supabase
+async function fetchBack({ supabase }: { supabase: SupabaseClient<Database> }) {
+    const { data } = await supabase
         .from('exercises')
         .select('*')
-        .in('targetMuscleGroup', ['Back', 'Lats'])
+        .in('targetMuscleGroup', ["Back", "Lats", "Upper Back"])
+        .order('id', { ascending: true });
     return data as Exercise[];
 }
