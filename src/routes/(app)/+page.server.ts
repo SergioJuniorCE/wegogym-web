@@ -2,11 +2,14 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PageServerLoad } from './$types';
 import type { Database } from '$lib/database.types';
 import type { Exercise } from '$lib/types';
+import { getDay } from '$lib/utils';
 
 export const load = (async ({ locals }) => {
 
     // Get current day
-    const day = new Date().getDay();
+
+
+    const day = getDay();
     let targetMuscleGroup = '';
     switch (day) {
         case 1:
