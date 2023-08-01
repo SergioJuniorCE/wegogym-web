@@ -69,7 +69,7 @@
 <div data-popup={popUpClickTarget}>
 	<div class="btn-group-vertical variant-filled-secondary">
 		<button on:click={toggleVideoHelp} on:keypress={toggleVideoHelp}>Video</button>
-		<button>Gif</button>
+		<!-- <button>Gif</button> -->
 	</div>
 	<div class="arrow variant-filled-secondary" />
 </div>

@@ -7,9 +7,8 @@ import { getDay } from '$lib/utils';
 export const load = (async ({ locals }) => {
 
     // Get current day
-
-
     const day = getDay();
+
     let targetMuscleGroup = '';
     switch (day) {
         case 1:
