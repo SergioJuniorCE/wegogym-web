@@ -22,7 +22,7 @@
 		const { data, error } = await supabase
 			.from('exercises')
 			.select('*')
-			.in('targetMuscleGroup', category === 'Back' ? ['Back', 'Lats'] : [category]);
+			.in('targetMuscleGroup', category === 'Back' ? ['Back', 'Lats', 'Upper Back'] : [category]);
 
 		if (error) {
 			alert(error.message);

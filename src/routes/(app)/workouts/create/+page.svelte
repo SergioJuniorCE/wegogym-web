@@ -34,12 +34,6 @@
 				meta: { exercise: exercise }
 			};
 		});
-		exerciseOptions.push({
-			label: '0123456789012345678901234567890123456789',
-			value: 'asd',
-			keywords: 'asd',
-			meta: { exercise: { name: 'asd', targetMuscleGroup: 'asd' } }
-		});
 	});
 
 	function onExerciseSelection(event: any): void {

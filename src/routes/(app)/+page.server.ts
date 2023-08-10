@@ -1,10 +1,15 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PageServerLoad } from './$types';
-import type { Database } from '$lib/database.types';
 import type { Exercise } from '$lib/types';
 import { getDay } from '$lib/utils';
+import type { Database } from '$lib/database.types';
 
-export const load = (async ({ locals }) => {
+export const load = (async ({ locals, url }) => {
+    const selectedWorkout = url.searchParams.get('workout')
+
+    if (!selectedWorkout) {
+
+    }
 
     // Get current day
     const day = getDay();
@@ -38,8 +43,6 @@ export const load = (async ({ locals }) => {
         data = await fetchExercises({ supabase: locals.supabase, targetMuscleGroup });
     }
 
-
-
     return {
         exercises: data ?? [],
         categories,
@@ -62,5 +65,6 @@ async function fetchBack({ supabase }: { supabase: SupabaseClient<Database> }) {
         .select('*')
         .in('targetMuscleGroup', ["Back", "Lats", "Upper Back"])
         .order('id', { ascending: true });
+    console.log(data);
     return data as Exercise[];
 }

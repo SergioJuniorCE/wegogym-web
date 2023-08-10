@@ -43,7 +43,7 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if isMobile}
+		{#if isMobile && session}
 			<BottomNavigation />
 		{:else if session}
 			<Navbar />
