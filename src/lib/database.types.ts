@@ -117,6 +117,7 @@ export interface Database {
         Row: {
           created_at: string | null
           day: string | null
+          exercises: number[] | null
           id: number
           name: string | null
           targetMuscleGroup: string | null
@@ -125,6 +126,7 @@ export interface Database {
         Insert: {
           created_at?: string | null
           day?: string | null
+          exercises?: number[] | null
           id?: number
           name?: string | null
           targetMuscleGroup?: string | null
@@ -133,6 +135,7 @@ export interface Database {
         Update: {
           created_at?: string | null
           day?: string | null
+          exercises?: number[] | null
           id?: number
           name?: string | null
           targetMuscleGroup?: string | null

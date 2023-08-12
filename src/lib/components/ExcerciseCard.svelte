@@ -21,7 +21,7 @@
 	}
 </script>
 
-<div class="card mt-3 w-96 pb-1">
+<div class="card mt-3 w-80 pb-1">
 	<header class="card-header mb-3">
 		<label class="flex items-center space-x-2">
 			<input class="checkbox" type="checkbox" bind:checked={isDone} />
@@ -37,7 +37,7 @@
 				</div>
 				<div class="flex flex-col">
 					<span class="text-sm">Reps</span>
-					<span class="text-2xl">{exercise.reps ?? "8-10"}</span>
+					<span class="text-2xl">{exercise.reps ?? '8-10'}</span>
 				</div>
 			</div>
 			<button class="w-12 m-0" use:popup={popupClick}>
@@ -55,7 +55,7 @@
 						title={exercise.name}
 						class="w-full"
 						height="315"
-						src={"https://www.youtube.com/embed/" + exercise.videoId}
+						src={'https://www.youtube.com/embed/' + exercise.videoId}
 						frameborder="0"
 						allowfullscreen
 					/>

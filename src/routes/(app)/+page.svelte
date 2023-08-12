@@ -9,37 +9,17 @@
 	import { supabase } from '$lib/supabaseClient';
 
 	export let data: PageData;
-	let { exercises, categories, targetMuscleGroup } = data;
+	const workouts = data.workouts;
+
+	
 
 	onMount(() => {
-		console.log(exercises);
-		console.log('targetMuscleGroup :>> ', targetMuscleGroup);
+		console.log(workouts)
 	});
-
-	let currentCategory: string = targetMuscleGroup;
-
-	async function handleChangeMuscle(category: string) {
-		const { data, error } = await supabase
-			.from('exercises')
-			.select('*')
-			.in('targetMuscleGroup', category === 'Back' ? ['Back', 'Lats', 'Upper Back'] : [category]);
-
-		if (error) {
-			alert(error.message);
-			return;
-		}
-
-		if (!data) {
-			alert('No exercises found');
-			return;
-		}
-
-		exercises = data;
-	}
 </script>
 
 {#if data.session}
-	<div class="container mx-auto flex justify-center">
+	<!-- <div class="container mx-auto flex justify-center">
 		<div class="my-5">
 			<div class="btn-group variant-filled">
 				{#each categories as category}
@@ -68,7 +48,7 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
+	</div> -->
 {:else}
 	<AnonUserLandingPage />
 {/if}

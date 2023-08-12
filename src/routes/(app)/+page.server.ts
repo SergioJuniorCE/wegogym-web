@@ -3,8 +3,42 @@ import type { PageServerLoad } from './$types';
 import type { Exercise } from '$lib/types';
 import { getDay } from '$lib/utils';
 import type { Database } from '$lib/database.types';
+import { WorkoutService } from '$lib/services/Workout.service';
 
 export const load = (async ({ locals, url }) => {
+    const workouts = await WorkoutService.getWorkouts({ supabase: locals.supabase });
+
+    
+    return {
+        workouts
+    }
+}) satisfies PageServerLoad;
+
+
+
+async function fetchExercises({ supabase, targetMuscleGroup }: { supabase: SupabaseClient<Database>, targetMuscleGroup: string }) {
+    const { data } = await supabase
+        .from('exercises')
+        .select('*')
+        .eq('targetMuscleGroup', targetMuscleGroup)
+        .order('id', { ascending: true });
+    return data as Exercise[];
+}
+
+async function fetchBack({ supabase }: { supabase: SupabaseClient<Database> }) {
+    const { data } = await supabase
+        .from('exercises')
+        .select('*')
+        .in('targetMuscleGroup', ["Back", "Lats", "Upper Back"])
+        .order('id', { ascending: true });
+    console.log(data);
+    return data as Exercise[];
+}
+
+async function legacyCode({ locals, url }: {
+    locals: App.Locals,
+    url: URL
+}) {
     const selectedWorkout = url.searchParams.get('workout')
 
     if (!selectedWorkout) {
@@ -48,23 +82,4 @@ export const load = (async ({ locals, url }) => {
         categories,
         targetMuscleGroup
     };
-}) satisfies PageServerLoad;
-
-async function fetchExercises({ supabase, targetMuscleGroup }: { supabase: SupabaseClient<Database>, targetMuscleGroup: string }) {
-    const { data } = await supabase
-        .from('exercises')
-        .select('*')
-        .eq('targetMuscleGroup', targetMuscleGroup)
-        .order('id', { ascending: true });
-    return data as Exercise[];
-}
-
-async function fetchBack({ supabase }: { supabase: SupabaseClient<Database> }) {
-    const { data } = await supabase
-        .from('exercises')
-        .select('*')
-        .in('targetMuscleGroup', ["Back", "Lats", "Upper Back"])
-        .order('id', { ascending: true });
-    console.log(data);
-    return data as Exercise[];
 }

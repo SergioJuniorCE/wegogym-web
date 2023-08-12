@@ -26,6 +26,8 @@
 
 	let isMobile = false;
 
+	let showBottomNav = false;
+
 	onMount(() => {
 		const {
 			data: { subscription }
@@ -37,13 +39,17 @@
 
 		isMobile = window.innerWidth < 768; // Adjust the threshold according to your needs
 
+		if (isMobile && session) {
+			showBottomNav = true;
+		}
+
 		return () => subscription.unsubscribe();
 	});
 </script>
 
 <AppShell>
 	<svelte:fragment slot="header">
-		{#if isMobile && session}
+		{#if showBottomNav}
 			<BottomNavigation />
 		{:else if session}
 			<Navbar />
@@ -51,12 +57,7 @@
 			<AnonNavbar />
 		{/if}
 	</svelte:fragment>
-	<!-- (sidebarLeft) -->
-	<!-- (sidebarRight) -->
-	<!-- (pageHeader) -->
-	<!-- Router Slot -->
-	<slot />
-	<!-- ---- / ---- -->
-	<!-- (pageFooter) -->
-	<!-- (footer) -->
+	<main class="{showBottomNav ? 'mb-24' : ''}">
+		<slot />
+	</main>
 </AppShell>
