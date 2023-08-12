@@ -34,25 +34,15 @@
 	{:else}
 		<div class="mb-3">
 			<h1>No exercises found</h1>
-			<p>Add more to complete your workout</p>
+			<p>Add more exercises to complete your workout</p>
 		</div>
 
 		<div class="mb-3">
 			<input class="input" type="text" placeholder="Exercise name" />
-
 			<!-- Filters -->
 			<p class="text-gray-400 text-xs">Filters comming soon...</p>
 		</div>
-		<!-- <div>
-			<span>Select</span>
-			<select class="select">
-				<option value="1">Option 1</option>
-				<option value="2">Option 2</option>
-				<option value="3">Option 3</option>
-				<option value="4">Option 4</option>
-				<option value="5">Option 5</option>
-			</select>
-		</div> -->
+
 		<div class="mb-3">
 			<p>Selected exercises</p>
 			{#each workoutExercises as exercise}
