@@ -6,7 +6,7 @@
 	// Most of your app wide CSS should be put in this file
 	import '/src/app.postcss';
 
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import { AppShell, Toast } from '@skeletonlabs/skeleton';
 	import Navbar from '$lib/components/ui/Navbar.svelte';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
@@ -46,7 +46,7 @@
 		return () => subscription.unsubscribe();
 	});
 </script>
-
+<Toast />
 <AppShell>
 	<svelte:fragment slot="header">
 		{#if showBottomNav}

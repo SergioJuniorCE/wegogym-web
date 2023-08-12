@@ -1,14 +1,48 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PageServerLoad } from './$types';
-import type { Exercise } from '$lib/types';
+import type { Exercise, UserExercise, Workout } from '$lib/types';
 import { getDay } from '$lib/utils';
 import type { Database } from '$lib/database.types';
 import { WorkoutService } from '$lib/services/Workout.service';
+import { error } from '@sveltejs/kit';
 
 export const load = (async ({ locals, url }) => {
-    const workouts = await WorkoutService.getWorkouts({ supabase: locals.supabase });
+    const session = await locals.getSession();
 
-    
+    if (!session) {
+        throw error(401, 'Unauthorized');
+    }
+
+    const workouts = await WorkoutService.getWorkoutFromUser({
+        supabase: locals.supabase,
+        userId: session.user.id
+    });
+
+
+    const exercises: Map<Workout, UserExercise[]> = new Map();
+
+    if (workouts) {
+        for (const workout of workouts) {
+            const { data, error } = await locals.supabase
+                .from('user_exercises')
+                .select('*')
+                .eq('workout', workout.id)
+                .order('id', { ascending: true });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data) {
+                throw error;
+            }
+
+            exercises.set(workout, data as UserExercise[]);
+        }
+    }
+
+    console.log(exercises);
+
     return {
         workouts
     }
